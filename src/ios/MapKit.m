@@ -637,7 +637,7 @@
 
 #pragma mark - RESIZE MAP TO FIT PIN ANNOTATINOS
 
--(void)fitMapToPins
+-(void)fitMapToPins:(CDVInvokedUrlCommand*)command
 {
     NSLog(@"  fitMapToPins");
     
