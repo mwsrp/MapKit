@@ -26,25 +26,9 @@
 
 @implementation MapKit
 
-- (void)echo:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-    
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-    
-    NSLog(@"echo: %@", echo);
-    
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
 -(void)consoleLog:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"[%@]: %@", [NSDate date], command.arguments.firstObject);
+    NSLog(@"js: %@", command.arguments.firstObject);
 }
 
 -(instancetype)init
@@ -575,7 +559,7 @@
 
 - (void)addMapPin:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"addMapPin A");
+    NSLog(@"addMapPin A %@", command.arguments);
     
     CGFloat mapId = [command.arguments.firstObject floatValue];
     CGFloat lat = [command.arguments[1] floatValue];

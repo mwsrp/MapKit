@@ -10,6 +10,4 @@
 
 @interface MapKit : CDVPlugin
 
-- (void)echo:(CDVInvokedUrlCommand*)command;
-
 @end
