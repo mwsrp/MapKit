@@ -28,6 +28,6 @@
     "ecosystem:cordova",
     "cordova-ios"
   ],
-  "author": "James Mattis",
-  "license": "MIT License",
+  "author": "James Mattis & Victor Zimmer @ HotDot",
+  "license": "HotDot Open Source License",
 }
