@@ -303,6 +303,9 @@ var MKMap = function (mapId) {
     that = this
     cordova.exec(this.execSuccess, this.execFailure, 'MapKit', 'setMapOpacity', [this.mapArrayId, opacity])
   }
+    this.fitMapToPins = function (){
+        cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'fitMapToPins', [])
+    }
   this.addMapPin = function (data) {
       cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin A", data])
     console.log(isPlainObject(data))
