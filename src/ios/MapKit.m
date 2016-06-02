@@ -51,6 +51,7 @@
 
     [super pluginInitialize];
     
+    /*
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
     
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, appDelegate.window.frame.size.width, appDelegate.window.frame.size.height)];
@@ -65,6 +66,7 @@
     self.coordinateQuadTree.mapView = self.mapView;
     
     [self.coordinateQuadTree initWithMapRect:self.mapView.visibleMapRect];
+    */
 }
 
 - (void)createMapView:(CDVInvokedUrlCommand*)command
@@ -77,7 +79,23 @@
     
     NSLog(@"createMapView");
     
+    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
+    
+    self.mapView.mapType = MKMapTypeSatellite;
+    
+    self.mapView.delegate = self;
+    [self.webView addSubview:self.mapView];
+    
+    self.coordinateQuadTree = [[MapKitCoordinateQuadTree alloc] init];
+    
+    self.coordinateQuadTree.mapView = self.mapView;
+    
+    [self.coordinateQuadTree initWithMapRect:self.mapView.visibleMapRect];
+    
+    /*
     self.mapView.frame = CGRectMake(xPos, yPos, width, height);
+    */
+     
     self.mapView.tag = mapId;
 
     CDVPluginResult* result = [CDVPluginResult
@@ -541,9 +559,11 @@
 
     MapKitAnnotation* pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
     
-    [self.coordinateQuadTree addAnnotation:pin];
+    //[self.coordinateQuadTree addAnnotation:pin];
     
-    [self updateMapViewAnnotations];
+    //[self updateMapViewAnnotations];
+    
+    [self.mapView addAnnotation:pin];
     
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
@@ -689,7 +709,7 @@
 {
     NSLog(@"regionDidChangeAnimated");
     
-    [self updateMapViewAnnotations];
+    //[self updateMapViewAnnotations];
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views

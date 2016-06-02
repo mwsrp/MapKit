@@ -31,6 +31,11 @@
     return self;
 }
 
+-(NSInteger)count
+{
+    return self.objects.count;
+}
+
 - (NSUInteger)hash
 {
     NSMutableString *objectsString = [[NSMutableString alloc] init];
