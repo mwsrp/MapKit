@@ -23,6 +23,10 @@ MapKit uses the identifier `no.hotdot.mapkit`
 MapKit exposes itself thru the global object `MKInterface` that is attached to the `window` object.
 This can be accessed globally as just `MKInterface`.
 
+## Note on Pin Images
+
+There are two pin images (pin.png & colorPin.png) at the @3x ios size (132 x 192) included in the plugin. They will be installed in www/Images, but need to be moved to the main classes or images folder in the Xcode project to show up. Currently, the plugin uses the "pin.png" file name. You can rename the files as necessary to use either pin. The plugin is expecting a 132 x 192 size image and could scale or stretch the image if you give it something else.
+
 ### Example
 ```
 var map = new MKInterface.MKMap('testMap')  //Creates a new map with ID "testMap"
@@ -67,6 +71,7 @@ You may earn 1$ by using it and be nice and credit me or become the next big app
 * [Politikontroller](http://www.politikontroller.no) (A Norwegian app) Some of the time devoted to MapKit was done in hours I worked for them. They kindly let me keep all MapKit related code for all purposes.
 * Caffeine.
 * Uhm Victor Zimmer (Me) @ [HotDot](http://www.hotdot.no) (For making this thing I guess)
+* James Mattis (Adding pin coalescing, etc.)
 
 Just a few more I want to give a huge "Thank You"
 * GitHub for this repo and their Mac Apps ([Atom Editor](https://atom.io) & [GitHub Desktop](https://desktop.github.com))
