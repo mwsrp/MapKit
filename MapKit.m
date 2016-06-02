@@ -28,7 +28,14 @@
 
 -(void)consoleLog:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"consoleLog");
+    NSMutableString *args = [[NSMutableString alloc] init];
+    
+    for (id object in command.arguments)
+    {
+        [args appendFormat:@"%@ ", object];
+    }
+    
+    NSLog(@"js: %@", args);
 }
 
 -(instancetype)init
@@ -51,7 +58,6 @@
 
     [super pluginInitialize];
     
-    /*
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
     
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, appDelegate.window.frame.size.width, appDelegate.window.frame.size.height)];
@@ -59,6 +65,8 @@
     self.mapView.mapType = MKMapTypeSatellite;
     
     self.mapView.delegate = self;
+    
+    /*
     [self.webView addSubview:self.mapView];
     
     self.coordinateQuadTree = [[MapKitCoordinateQuadTree alloc] init];
@@ -79,11 +87,15 @@
     
     NSLog(@"createMapView");
     
-    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
+    if (!self.mapView)
+    {
+        self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
     
-    self.mapView.mapType = MKMapTypeSatellite;
+        self.mapView.mapType = MKMapTypeSatellite;
     
-    self.mapView.delegate = self;
+        self.mapView.delegate = self;
+    }
+    
     [self.webView addSubview:self.mapView];
     
     self.coordinateQuadTree = [[MapKitCoordinateQuadTree alloc] init];
@@ -524,6 +536,8 @@
 
 - (void)setMapRegion:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"setMapRegion A");
+    
     CGFloat mapId = [command.arguments.firstObject floatValue];
     CGFloat centerLat = [command.arguments[1] floatValue];
     CGFloat centerLon = [command.arguments[2] floatValue];
@@ -537,6 +551,8 @@
     MKCoordinateRegion newRegion = MKCoordinateRegionMake(newCenter, newSpan);
     [self.mapView setRegion:newRegion animated:animated];
     
+    NSLog(@"setMapRegion B");
+
     [self.coordinateQuadTree setMapRect:self.mapView.visibleMapRect];
     
     CDVPluginResult* result = [CDVPluginResult
@@ -544,11 +560,13 @@
                                messageAsString:[NSString stringWithFormat:@"%f", mapId]];
     
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    
+    NSLog(@"setMapRegion C");
 }
 
 - (void)addMapPin:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"addMapPin A");
+    NSLog(@"addMapPin A %@", command.arguments);
     
     CGFloat mapId = [command.arguments.firstObject floatValue];
     CGFloat lat = [command.arguments[1] floatValue];
@@ -559,9 +577,11 @@
 
     MapKitAnnotation* pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
     
-    [self.coordinateQuadTree addAnnotation:pin];
+    //[self.coordinateQuadTree addAnnotation:pin];
     
-    [self updateMapViewAnnotations];
+    //[self updateMapViewAnnotations];
+    
+    [self.mapView addAnnotation:pin];
     
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
@@ -707,7 +727,7 @@
 {
     NSLog(@"regionDidChangeAnimated");
     
-    [self updateMapViewAnnotations];
+    //[self updateMapViewAnnotations];
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
