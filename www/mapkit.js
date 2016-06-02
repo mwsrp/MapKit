@@ -121,6 +121,9 @@ var MKMap = function (mapId) {
       this.options.width = width || this.options.width
     }
   }
+    this.echo = function () {
+        cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'echo', ["ECHO!!"])
+    }
   this.setPosition = function (data) {
     if (Number.isFinite(arguments[0]) && Number.isFinite(arguments[1]))
     {
