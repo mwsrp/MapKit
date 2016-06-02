@@ -344,12 +344,12 @@ var MKMap = function (mapId) {
       lon = pin.lon || 11
       objectID = pin.objectID
 
-      if (this.Pins[title] != undefined)
+      if (this.Pins[objectID] != undefined)
       {
-        this.Pins[title].removePin()
+        this.Pins[objectID].removePin()
       }
       Pin = new MKPin(this, lat, lon, objectID)
-      this.Pins[title] = Pin
+      this.Pins[objectID] = Pin
       this.PinsArray.push(Pin)
 
       PinsToAdd.push(Pin.createPinArray())
