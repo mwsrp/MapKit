@@ -311,12 +311,14 @@ var MKMap = function (mapId) {
       lat = data.lat
       lon = data.lon
       objectID = data.objectID
+      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin A1 objectID:", data.objectID])
     }
     else
     {
       lat = arguments[0]
       lon = arguments[1]
       objectID = arguments[2]
+        cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin A2 objectID:", arguments[2]])
     }
     if (this.Pins[objectID] != undefined)
     {
