@@ -76,6 +76,8 @@ float MKCellSizeForZoomScale(MKZoomScale zoomScale)
 
 - (void)setMapRect:(MKMapRect)mapRect
 {
+    NSLog(@"__coordQuadTree setMapRect");
+
     _root->boundingBox = MKBoundingBoxForMapRect(mapRect);
 }
 
