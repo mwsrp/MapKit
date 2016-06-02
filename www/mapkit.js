@@ -16,6 +16,7 @@ function isPlainObject(o) {
 }
 
 var MKPin = function (map, lat, lon, objectID) {
+  cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:MKPin init"])
   this.map = map
   this.lat = lat
   this.lon = lon
@@ -31,8 +32,9 @@ var MKPin = function (map, lat, lon, objectID) {
   this.createPin = function () {
     that = this
     console.log("Creating pin: ${[this.map.mapArrayId, this.lat, this.lon, this.title, this.description].join(" - ")}")
-    //cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ['CreatePin'])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:createPin A"])
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'addMapPin', [this.map.mapArrayId, this.lat, this.lon, this.objectID])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:createPin B"])
   }
   this.createPinArray = function () {
     return [this.lat, this.lon, this.objectID]
@@ -305,7 +307,7 @@ var MKMap = function (mapId) {
     cordova.exec(this.execSuccess, this.execFailure, 'MapKit', 'setMapOpacity', [this.mapArrayId, opacity])
   }
   this.addMapPin = function (data) {
-      //cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', 'mapkit.js: addMapPin')
+      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:addMapPin A"])
     console.log(isPlainObject(data))
       lat = 0.0
       lon = 0.0
@@ -326,9 +328,12 @@ var MKMap = function (mapId) {
     {
       this.Pins[title].removePin()
     }
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:addMapPin B"])
     Pin = new MKPin(this, lat, lon, objectID)
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:addMapPin C"])
     this.Pins[title] = Pin
     this.PinsArray.push(Pin)
+      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:addMapPin C"])
     Pin.createPin()
   }
   this.addMapPins = function (pinArr) {
