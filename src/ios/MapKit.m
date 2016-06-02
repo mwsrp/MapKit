@@ -55,7 +55,7 @@
 - (void)pluginInitialize
 {
     NSLog(@"pluginInitialize");
-
+    
     [super pluginInitialize];
     
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
@@ -67,14 +67,14 @@
     self.mapView.delegate = self;
     
     /*
-    [self.webView addSubview:self.mapView];
-    
-    self.coordinateQuadTree = [[MapKitCoordinateQuadTree alloc] init];
-    
-    self.coordinateQuadTree.mapView = self.mapView;
-    
-    [self.coordinateQuadTree initWithMapRect:self.mapView.visibleMapRect];
-    */
+     [self.webView addSubview:self.mapView];
+     
+     self.coordinateQuadTree = [[MapKitCoordinateQuadTree alloc] init];
+     
+     self.coordinateQuadTree.mapView = self.mapView;
+     
+     [self.coordinateQuadTree initWithMapRect:self.mapView.visibleMapRect];
+     */
 }
 
 - (void)createMapView:(CDVInvokedUrlCommand*)command
@@ -90,9 +90,9 @@
     if (!self.mapView)
     {
         self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
-    
+        
         self.mapView.mapType = MKMapTypeSatellite;
-    
+        
         self.mapView.delegate = self;
     }
     
@@ -105,11 +105,11 @@
     [self.coordinateQuadTree initWithMapRect:self.mapView.visibleMapRect];
     
     /*
-    self.mapView.frame = CGRectMake(xPos, yPos, width, height);
-    */
-     
+     self.mapView.frame = CGRectMake(xPos, yPos, width, height);
+     */
+    
     self.mapView.tag = mapId;
-
+    
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
                                messageAsString:[NSString stringWithFormat:@"%f", mapId]];
@@ -147,7 +147,7 @@
 - (void)removeMapView:(CDVInvokedUrlCommand*)command
 {
     CGFloat mapId = [command.arguments.firstObject floatValue];
-
+    
     [self.mapView removeFromSuperview];
     
     CDVPluginResult* result = [CDVPluginResult
@@ -198,7 +198,7 @@
                                messageAsString:[NSString stringWithFormat:@"%f", mapId]];
     
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-   
+    
 }
 
 - (void)changeMapXPos:(CDVInvokedUrlCommand*)command
@@ -552,7 +552,7 @@
     [self.mapView setRegion:newRegion animated:animated];
     
     NSLog(@"setMapRegion B");
-
+    
     [self.coordinateQuadTree setMapRect:self.mapView.visibleMapRect];
     
     CDVPluginResult* result = [CDVPluginResult
@@ -574,14 +574,14 @@
     NSInteger objectID = [command.arguments[3] integerValue];
     
     NSLog(@"addMapPinB objectID: %zd", objectID);
-
+    
     MapKitAnnotation* pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
     
-    //[self.coordinateQuadTree addAnnotation:pin];
+    [self.coordinateQuadTree addAnnotation:pin];
     
-    //[self updateMapViewAnnotations];
+    [self updateMapViewAnnotations];
     
-    [self.mapView addAnnotation:pin];
+    //[self.mapView addAnnotation:pin];
     
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
@@ -685,7 +685,7 @@
     if (annotation.count == 1)
     {
         NSMutableString* jsParam = [[NSMutableString alloc] init];
-     
+        
         [jsParam appendString:@"\""];
         [jsParam appendString:[NSString stringWithFormat:@"%zd", ((NSNumber *)annotation.objects.firstObject).integerValue]];
         [jsParam appendString:@"\""];
@@ -721,9 +721,9 @@
     
     pinAnnotationView.canShowCallout = NO;
     pinAnnotationView.draggable = NO;
-
+    
     NSLog(@"viewForAnno B pinAnnoView: %@", pinAnnotationView);
-
+    
     return pinAnnotationView;
 }
 
@@ -731,7 +731,7 @@
 {
     NSLog(@"regionDidChangeAnimated");
     
-    //[self updateMapViewAnnotations];
+    [self updateMapViewAnnotations];
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
