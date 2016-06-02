@@ -703,6 +703,8 @@
         [jsParam appendString:[NSString stringWithFormat:@"%zd", ((NSNumber *)annotation.objects.firstObject).integerValue]];
         [jsParam appendString:@"\""];
         
+        NSLog(@"mapView didSelectAnnotationView %zd", ((NSNumber *)annotation.objects.firstObject).integerValue]);
+        
         NSString* jsString = [NSString stringWithFormat:@"MKInterface.__objc__.pinClickCallback(%@);", jsParam];
         [self.webView stringByEvaluatingJavaScriptFromString:jsString];
     }
