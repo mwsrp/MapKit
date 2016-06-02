@@ -15,12 +15,12 @@ function isPlainObject(o) {
           :(typeof o == 'object');
 }
 
-var MKPin = function (map, lat, lon, objectID) {
+var MKPin = function (map, lat, lon, objID) {
   cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["MKPin init"])
   this.map = map
   this.lat = lat
   this.lon = lon
-  this.objectID = objectID
+  this.objID = objID
   this.execSuccess = function (data) {
     console.log("#MKPin(${that.title}) Executed native command successfully")
     console.log(data)
@@ -31,13 +31,13 @@ var MKPin = function (map, lat, lon, objectID) {
   }
   this.createPin = function () {
     that = this
-    console.log("Creating pin: ${[this.map.mapArrayId, this.lat, this.lon, this.title, this.description].join(" - ")}")
-    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["createPin A"])
-    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'addMapPin', [this.map.mapArrayId, this.lat, this.lon, this.objectID])
+    console.log("Creating pin: ${[this.map.mapArrayId, this.lat, this.lon, this.objectID}")
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["createPin A objectID:", this.objID])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'addMapPin', [this.map.mapArrayId, this.lat, this.lon, this.objID])
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["createPin B"])
   }
   this.createPinArray = function () {
-    return [this.lat, this.lon, this.objectID]
+    return [this.lat, this.lon, this.objID]
   }
 }
 
@@ -325,7 +325,7 @@ var MKMap = function (mapId) {
     {
       this.Pins[objectID].removePin()
     }
-    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin B"])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin B objectID:", objectID])
     Pin = new MKPin(this, lat, lon, objectID)
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin C"])
     this.Pins[objectID] = Pin
