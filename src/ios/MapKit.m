@@ -700,7 +700,7 @@
         NSMutableString* jsParam = [[NSMutableString alloc] init];
         
         [jsParam appendString:@"\""];
-        [jsParam appendString:[NSString stringWithFormat:@"%f", self.mapView.tag]];
+        [jsParam appendString:[NSString stringWithFormat:@"%zd", self.mapView.tag]];
         [jsParam appendString:@"\""];
         [jsParam appendString:@","];
         [jsParam appendString:@"\""];
