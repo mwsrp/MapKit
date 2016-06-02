@@ -573,7 +573,7 @@
     CGFloat lon = [command.arguments[2] floatValue];
     NSInteger objectID = [command.arguments[3] integerValue];
     
-    NSLog(@"addMapPinB");
+    NSLog(@"addMapPinB objectID: %zd", objectID);
 
     MapKitAnnotation* pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
     
