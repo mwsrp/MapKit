@@ -28,7 +28,14 @@
 
 -(void)consoleLog:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"js: %@", command.arguments.firstObject);
+    NSMutableString *args = [[NSMutableString alloc] init];
+    
+    for (id object in command.arguments)
+    {
+        [args appendFormat:@"%@ ", object];
+    }
+    
+    NSLog(@"js: %@", args);
 }
 
 -(instancetype)init
