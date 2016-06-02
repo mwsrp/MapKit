@@ -699,7 +699,6 @@
     {
         NSLog(@"mapView didSelectAnnotationView %zd", ((NSNumber *)annotation.objects.firstObject).integerValue);
 
-        /*
         NSMutableString* jsParam = [[NSMutableString alloc] init];
         
         [jsParam appendString:@"\""];
@@ -712,21 +711,6 @@
         
         NSString* jsString = [NSString stringWithFormat:@"MKInterface.__objc__.pinClickCallback(%@);", jsParam];
         [self.webView stringByEvaluatingJavaScriptFromString:jsString];
-        */
-        
-        CDVPluginResult* pluginResult = nil;
-        NSString* objectIDString = [NSString stringWithFormat:@"%zd", ((NSNumber *)annotation.objects.firstObject).integerValue];
-        
-        if (objectIDString != nil && [objectIDString length] > 0)
-        {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:objectIDString];
-        }
-        else
-        {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-        }
-        
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
 }
 
