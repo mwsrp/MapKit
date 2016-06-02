@@ -87,6 +87,7 @@ CGFloat MKScaledValueForValue(CGFloat value)
     {
         CGRect newBounds = CGRectMake(0, 0, 22.0, 32.0);
         self.frame = MKCenterRect(newBounds, self.center);
+        self.countLabel.text = @"";
     }
 
     [self setNeedsDisplay];
