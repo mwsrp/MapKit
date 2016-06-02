@@ -81,6 +81,8 @@ float MKCellSizeForZoomScale(MKZoomScale zoomScale)
 
 - (void)addAnnotation:(MapKitAnnotation *)annotation
 {
+    NSLog(@"addAnnotation");
+
     MKQuadTreeNodeData data = MKQuadTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, ((NSNumber *)annotation.objects.firstObject).integerValue);
 
     MKQuadTreeNodeInsertData(_root, data);

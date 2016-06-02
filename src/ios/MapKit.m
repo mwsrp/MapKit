@@ -530,16 +530,20 @@
 
 - (void)addMapPin:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"addMapPin A");
+    
     CGFloat mapId = [command.arguments.firstObject floatValue];
     CGFloat lat = [command.arguments[1] floatValue];
     CGFloat lon = [command.arguments[2] floatValue];
     NSInteger objectID = [command.arguments[3] integerValue];
     
-    NSLog(@"addMapPin");
+    NSLog(@"addMapPinB");
 
     MapKitAnnotation* pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
     
     [self.coordinateQuadTree addAnnotation:pin];
+    
+    [self updateMapViewAnnotations];
     
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
@@ -571,10 +575,10 @@
         pin.title = title;
         pin.subtitle = description;
         
-        [Pins addObject:pin];
+        [self.coordinateQuadTree addAnnotation:pin];
     }
     
-    [self.mapView addAnnotations:Pins];
+    [self updateMapViewAnnotations];
     
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
@@ -598,6 +602,42 @@
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
     
 }
+
+#pragma mark - UPDATE MAP VIEW ANNOTATIONS
+
+-(void)updateMapViewAnnotations
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        __strong __typeof(self) strongSelf = weakSelf;
+        
+        double scale = strongSelf.mapView.bounds.size.width / strongSelf.mapView.visibleMapRect.size.width;
+        
+        NSArray *annotations = [strongSelf.coordinateQuadTree clusteredAnnotationsWithinMapRect:mapView.visibleMapRect withZoomScale:scale];
+        
+        NSMutableSet *before = [NSMutableSet setWithArray:strongSelf.mapView.annotations];
+        [before removeObject:[strongSelf.mapView userLocation]];
+        NSSet *after = [NSSet setWithArray:annotations];
+        
+        NSMutableSet *toKeep = [NSMutableSet setWithSet:before];
+        [toKeep intersectSet:after];
+        
+        NSMutableSet *toAdd = [NSMutableSet setWithSet:after];
+        [toAdd minusSet:toKeep];
+        
+        NSMutableSet *toRemove = [NSMutableSet setWithSet:before];
+        [toRemove minusSet:after];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.mapView removeAnnotations:[toRemove allObjects]];
+            [strongSelf.mapView addAnnotations:[toAdd allObjects]];
+            [strongSelf.mapView showAnnotations:strongSelf.mapView.annotations];
+        });
+    });
+}
+
+#pragma mark - MAP VIEW DELEGATE METHODS
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(nonnull MKAnnotationView *)view
 {
@@ -646,35 +686,9 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-    __weak __typeof(self) weakSelf = self;
-    
     NSLog(@"regionDidChangeAnimated");
-
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        __strong __typeof(self) strongSelf = weakSelf;
-        
-        double scale = strongSelf.mapView.bounds.size.width / strongSelf.mapView.visibleMapRect.size.width;
-        
-        NSArray *annotations = [strongSelf.coordinateQuadTree clusteredAnnotationsWithinMapRect:mapView.visibleMapRect withZoomScale:scale];
-        
-        NSMutableSet *before = [NSMutableSet setWithArray:strongSelf.mapView.annotations];
-        [before removeObject:[strongSelf.mapView userLocation]];
-        NSSet *after = [NSSet setWithArray:annotations];
-        
-        NSMutableSet *toKeep = [NSMutableSet setWithSet:before];
-        [toKeep intersectSet:after];
-        
-        NSMutableSet *toAdd = [NSMutableSet setWithSet:after];
-        [toAdd minusSet:toKeep];
-        
-        NSMutableSet *toRemove = [NSMutableSet setWithSet:before];
-        [toRemove minusSet:after];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [strongSelf.mapView removeAnnotations:[toRemove allObjects]];
-            [strongSelf.mapView addAnnotations:[toAdd allObjects]];
-        });
-    });
+    
+    [self updateMapViewAnnotations];
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
