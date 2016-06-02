@@ -744,7 +744,7 @@
 {
     NSLog(@"regionDidChangeAnimated");
     
-    [self updateMapViewAnnotations];
+    //[self updateMapViewAnnotations];
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
