@@ -26,6 +26,8 @@
         }
         
         self.count = objectsArray.count;
+        
+        NSLog(@"  MKA: init (%1.5f, %1.5f) %@ %zd", self.coordinate.latitude, self.coordinate.longitude, self.objects, self.count);
     }
     
     return self;
