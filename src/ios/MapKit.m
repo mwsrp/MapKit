@@ -28,7 +28,7 @@
 
 -(void)consoleLog:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"consoleLog: %@", command.arguments.firstObject);
+    NSLog(@"consoleLog: %@", command);
 }
 
 -(instancetype)init
