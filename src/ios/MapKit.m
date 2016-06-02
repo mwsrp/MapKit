@@ -596,7 +596,7 @@
     
     NSArray *pins = command.arguments[1];
     
-    NSLog(@"addMapPins");
+    NSLog(@"addMapPins %@", pins);
     
     for (int i = 0; i < pins.count; i++)
     {
