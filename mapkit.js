@@ -16,6 +16,7 @@ function isPlainObject(o) {
 }
 
 var MKPin = function (map, lat, lon, objectID) {
+  cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["MKPin init"])
   this.map = map
   this.lat = lat
   this.lon = lon
@@ -31,8 +32,9 @@ var MKPin = function (map, lat, lon, objectID) {
   this.createPin = function () {
     that = this
     console.log("Creating pin: ${[this.map.mapArrayId, this.lat, this.lon, this.title, this.description].join(" - ")}")
-    //cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ['CreatePin'])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["createPin A"])
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'addMapPin', [this.map.mapArrayId, this.lat, this.lon, this.objectID])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["createPin B"])
   }
   this.createPinArray = function () {
     return [this.lat, this.lon, this.objectID]
@@ -121,6 +123,9 @@ var MKMap = function (mapId) {
       this.options.width = width || this.options.width
     }
   }
+    this.echo = function () {
+        cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'echo', ["ECHO!!"])
+    }
   this.setPosition = function (data) {
     if (Number.isFinite(arguments[0]) && Number.isFinite(arguments[1]))
     {
@@ -302,11 +307,8 @@ var MKMap = function (mapId) {
     cordova.exec(this.execSuccess, this.execFailure, 'MapKit', 'setMapOpacity', [this.mapArrayId, opacity])
   }
   this.addMapPin = function (data) {
-      //cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', 'mapkit.js: addMapPin')
+      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin A", data])
     console.log(isPlainObject(data))
-      lat = 0.0
-      lon = 0.0
-      objectID = 0
     if (data != undefined && isPlainObject(data))
     {
       lat = data.lat
@@ -319,13 +321,16 @@ var MKMap = function (mapId) {
       lon = arguments[1]
       objectID = arguments[2]
     }
-    if (this.Pins[title] != undefined)
+    if (this.Pins[objectID] != undefined)
     {
-      this.Pins[title].removePin()
+      this.Pins[objectID].removePin()
     }
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin B"])
     Pin = new MKPin(this, lat, lon, objectID)
-    this.Pins[title] = Pin
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin C"])
+    this.Pins[objectID] = Pin
     this.PinsArray.push(Pin)
+      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin C"])
     Pin.createPin()
   }
   this.addMapPins = function (pinArr) {
