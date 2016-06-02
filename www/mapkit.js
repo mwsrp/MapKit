@@ -388,6 +388,7 @@ function handlePinClickCallback(mapId, objectID)
 
 window.MKInterface = {}
 window.MKInterface.MKMap = MKMap
+window.MKInterface.MKLog = MKLog
 window.MKInterface.getMapByArrayId = function (aid) { return MapArray[aid] }
 window.MKInterface.getMapByMapId = function (mid) { return MapDict[mid] }
 window.MKInterface.__objc__ = {}
