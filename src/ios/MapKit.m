@@ -28,7 +28,7 @@
 
 -(void)consoleLog:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"consoleLog: %@", command);
+    NSLog(@"consoleLog");
 }
 
 -(instancetype)init
@@ -602,6 +602,8 @@
 
 -(void)updateMapViewAnnotations
 {
+    NSLog(@"  updateMapViewAnnos A");
+    
     __weak __typeof(self) weakSelf = self;
     
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
@@ -610,6 +612,8 @@
         double scale = strongSelf.mapView.bounds.size.width / strongSelf.mapView.visibleMapRect.size.width;
         
         NSArray *annotations = [strongSelf.coordinateQuadTree clusteredAnnotationsWithinMapRect:strongSelf.mapView.visibleMapRect withZoomScale:scale];
+        
+        NSLog(@"  updateMapViewAnnos B");
         
         NSMutableSet *before = [NSMutableSet setWithArray:strongSelf.mapView.annotations];
         [before removeObject:[strongSelf.mapView userLocation]];
@@ -628,6 +632,8 @@
             [strongSelf.mapView removeAnnotations:[toRemove allObjects]];
             [strongSelf.mapView addAnnotations:[toAdd allObjects]];
             [strongSelf.mapView showAnnotations:strongSelf.mapView.annotations animated:YES];
+            
+            NSLog(@"  updateMapViewAnnos C");
         });
     });
 }
