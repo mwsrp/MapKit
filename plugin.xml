@@ -8,7 +8,7 @@
     <js-module src="www/mapkit.js" name="mapkit">
         <clobbers target="mapkit" />
     </js-module>
-    <asset src="www/Images" target="Images" />
+    <asset src="Images" target="Images" />
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="MapKit">
