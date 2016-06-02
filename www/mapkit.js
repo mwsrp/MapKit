@@ -31,7 +31,7 @@ var MKPin = function (map, lat, lon, objectID) {
   this.createPin = function () {
     that = this
     console.log("Creating pin: ${[this.map.mapArrayId, this.lat, this.lon, this.title, this.description].join(" - ")}")
-    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ['CreatePin'])
+    //cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ['CreatePin'])
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'addMapPin', [this.map.mapArrayId, this.lat, this.lon, this.objectID])
   }
   this.createPinArray = function () {
@@ -209,6 +209,7 @@ var MKMap = function (mapId) {
     this.options.mapScale = true
     that = this
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'showMapScale', [this.mapArrayId])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["SHOW MAP SCALE"])
   }
   this.hideMapScale = function () {
     this.options.mapScale = false
