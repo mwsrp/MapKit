@@ -633,7 +633,21 @@
                                messageAsString:[NSString stringWithFormat:@"%f", mapId]];
     
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
+#pragma mark - RESIZE MAP TO FIT PIN ANNOTATINOS
+
+-(void)fitMapToPins
+{
+    NSLog(@"  fitMapToPins");
     
+    __weak __typeof(self) weakSelf = self;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong __typeof(self) strongSelf = weakSelf;
+        
+        [strongSelf.mapView showAnnotations:strongSelf.mapView.annotations animated:YES];
+    });
 }
 
 #pragma mark - UPDATE MAP VIEW ANNOTATIONS
@@ -669,7 +683,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.mapView removeAnnotations:[toRemove allObjects]];
             [strongSelf.mapView addAnnotations:[toAdd allObjects]];
-            [strongSelf.mapView showAnnotations:strongSelf.mapView.annotations animated:YES];
             
             NSLog(@"  updateMapViewAnnos C");
         });
