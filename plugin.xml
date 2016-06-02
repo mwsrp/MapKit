@@ -3,7 +3,7 @@
     id="no.hotdot.mapkit" version="0.0.5">
     <name>MapKit</name>
     <description>Cordova Plugin for Native Apple Maps</description>
-    <license>MIT License</license>
+    <license>HotDot Open Source License</license>
     <keywords>cordova,device,maps,mapkit,apple,applemaps</keywords>
     <js-module src="www/mapkit.js" name="mapkit">
         <clobbers target="mapkit" />
@@ -12,6 +12,7 @@
         <config-file target="config.xml" parent="/*">
             <feature name="MapKit">
                 <param name="ios-package" value="MapKit"/>
+                <param name="onload" value="true" />
             </feature>
         </config-file>
         <header-file src="src/ios/MapKit.h" />
