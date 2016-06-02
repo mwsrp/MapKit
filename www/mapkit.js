@@ -321,14 +321,14 @@ var MKMap = function (mapId) {
       lon = arguments[1]
       objectID = arguments[2]
     }
-    if (this.Pins[title] != undefined)
+    if (this.Pins[objectID] != undefined)
     {
-      this.Pins[title].removePin()
+      this.Pins[objectID].removePin()
     }
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:addMapPin B"])
     Pin = new MKPin(this, lat, lon, objectID)
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:addMapPin C"])
-    this.Pins[title] = Pin
+    this.Pins[objectID] = Pin
     this.PinsArray.push(Pin)
       cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["js:addMapPin C"])
     Pin.createPin()
