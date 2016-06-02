@@ -15,6 +15,12 @@ function isPlainObject(o) {
           :(typeof o == 'object');
 }
 
+var MKLog = function () {
+    this.log = function(logData) {
+        cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', [logData])
+    }
+}
+
 var MKPin = function (map, lat, lon, objID) {
   cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["MKPin init"])
   this.map = map
