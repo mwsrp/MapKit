@@ -363,17 +363,20 @@ var MKMap = function (mapId) {
   }
 }
 
-function handlePinInfoClickCallback(mapId, title)
+function handlePinInfoClickCallback(mapId, objectID)
 {
-  console.log("Got info click on Map: ${parseInt(mapId)} on Pin: ${title}")
-  Pin = MapArray[parseInt(mapId)].Pins[title]
+  console.log("Got info click on Map: ${parseInt(mapId)} on Pin: ${objectID}")
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["handlePinInfoClickCallback", objectID])
+  Pin = MapArray[parseInt(mapId)].Pins[objectID]
   Pin.infoClickCallback(Pin)
 }
 
-function handlePinClickCallback(mapId, title)
+function handlePinClickCallback(mapId, objectID)
 {
-  console.log("Got pin click on Map: ${parseInt(mapId)} on Pin: ${title}")
-  Pin = MapArray[parseInt(mapId)].Pins[title]
+  console.log("Got pin click on Map: ${parseInt(mapId)} on Pin: ${objectID}")
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["handlePinClickCallback", objectID])
+
+  Pin = MapArray[parseInt(mapId)].Pins[objectID]
   Pin.pinClickCallback(Pin)
 }
 
