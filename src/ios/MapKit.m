@@ -44,7 +44,7 @@
 
 -(void)consoleLog:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"consoleLog %@", command.arguments);
+    NSLog(@"[%@]: %@", [NSDate date], command.arguments.firstObject);
 }
 
 -(instancetype)init
