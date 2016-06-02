@@ -10,9 +10,11 @@ MapKit uses Apple Maps on iOS.
 Installation is done thru Cordova/PhoneGap CLI.
 
 For Cordova:
-`$ cordova plugin rm no.hotdot.mapkit`
-`$ cordova plugin add https://github.com/mwsrp/MapKit/MapKit.git`
-`$ cordova run ios`
+```
+$ cordova plugin rm no.hotdot.mapkit
+$ cordova plugin add https://github.com/mwsrp/MapKit/MapKit.git
+$ cordova run ios
+```
 
 MapKit uses the identifier `no.hotdot.mapkit`
 
