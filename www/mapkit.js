@@ -307,7 +307,7 @@ var MKMap = function (mapId) {
     cordova.exec(this.execSuccess, this.execFailure, 'MapKit', 'setMapOpacity', [this.mapArrayId, opacity])
   }
   this.addMapPin = function (data) {
-      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin A"])
+      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin A", data])
     console.log(isPlainObject(data))
     if (data != undefined && isPlainObject(data))
     {
