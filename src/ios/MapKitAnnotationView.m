@@ -35,6 +35,8 @@ CGFloat MKScaledValueForValue(CGFloat value)
 
 @property (strong, nonatomic) UILabel *countLabel;
 
+@property (assign, atomic) BOOL labelInView;
+
 @end
 
 @implementation MapKitAnnotationView
@@ -48,6 +50,8 @@ CGFloat MKScaledValueForValue(CGFloat value)
         self.backgroundColor = [UIColor clearColor];
         
         self.image = [UIImage imageNamed:@"pin.png"];
+        
+        [self setupLabel];
     }
     
     return self;
@@ -64,7 +68,7 @@ CGFloat MKScaledValueForValue(CGFloat value)
     self.countLabel.font = [UIFont boldSystemFontOfSize:12];
     self.countLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     
-    [self addSubview:self.countLabel];
+    self.labelInView = NO;
 }
 
 - (void)setCount:(NSUInteger)count
@@ -73,8 +77,12 @@ CGFloat MKScaledValueForValue(CGFloat value)
     
     if (_count > 1)
     {
-        [self setupLabel];
-
+        if (!self.labelInView)
+        {
+            [self addSubview:self.countLabel];
+            self.labelInView = YES;
+        }
+        
         CGRect newBounds = CGRectMake(0, 0, roundf(44 * MKScaledValueForValue(count)), roundf(44 * MKScaledValueForValue(count)));
         self.frame = MKCenterRect(newBounds, self.center);
         
@@ -87,9 +95,15 @@ CGFloat MKScaledValueForValue(CGFloat value)
     {
         CGRect newBounds = CGRectMake(0, 0, 22.0, 32.0);
         self.frame = MKCenterRect(newBounds, self.center);
-        self.countLabel.text = @"";
+        
+        if (self.labelInView)
+        {
+            [self.countLabel removeFromSuperview];
+            self.labelInView = NO;
+        }
     }
-
+    
+    [self setNeedsLayout];
     [self setNeedsDisplay];
 }
 
