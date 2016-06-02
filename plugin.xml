@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    id="no.hotdot.mapkit" version="0.0.2">
+    id="no.hotdot.mapkit" version="0.0.1">
     <name>MapKit</name>
-    <description>Cordova Plugin for Native Maps</description>
-    <license>HotDot Open Source License</license>
+    <description>Cordova Plugin for Native Apple Maps</description>
+    <license>MIT License</license>
     <keywords>cordova,device,maps,mapkit,apple,applemaps</keywords>
     <js-module src="www/mapkit.js" name="mapkit">
         <clobbers target="mapkit" />
@@ -16,9 +16,16 @@
         </config-file>
         <header-file src="src/ios/MapKit.h" />
         <source-file src="src/ios/MapKit.m" />
-        <header-file src="src/ios/MKComplexMapPin.h" />
-        <source-file src="src/ios/MKComplexMapPin.m" />
+        <header-file src="src/ios/MapKitAnnotation.h" />
+        <source-file src="src/ios/MapKitAnnotation.m" />
+        <header-file src="src/ios/MapKitAnnotationView.h" />
+        <source-file src="src/ios/MapKitAnnotationView.m" />
+        <header-file src="src/ios/MapKitQuadTree.h" />
+        <source-file src="src/ios/MapKitQuadTree.m" />
+        <header-file src="src/ios/MapKitCoordinateQuadTree.h" />
+        <source-file src="src/ios/MapKitCoordinateQuadTree.m" />
         <framework src="MapKit.framework" />
         <framework src="CoreLocation.framework" />
+        <framework src="QuartzCore.framework" />
     </platform>
 </plugin>
