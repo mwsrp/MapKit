@@ -31,6 +31,7 @@ var MKPin = function (map, lat, lon, objectID) {
   this.createPin = function () {
     that = this
     console.log("Creating pin: ${[this.map.mapArrayId, this.lat, this.lon, this.title, this.description].join(" - ")}")
+    //cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ['CreatePin'])
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'addMapPin', [this.map.mapArrayId, this.lat, this.lon, this.objectID])
   }
   this.createPinArray = function () {
@@ -204,18 +205,17 @@ var MKMap = function (mapId) {
     that = this
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'hideMapView', [this.mapArrayId])
   }
-
   this.showMapScale = function () {
     this.options.mapScale = true
     that = this
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'showMapScale', [this.mapArrayId])
+    cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["SHOW MAP SCALE"])
   }
   this.hideMapScale = function () {
     this.options.mapScale = false
     that = this
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'hideMapScale', [this.mapArrayId])
   }
-
   this.showMapCompass = function () {
     if (!this.locationManager.canUseLocation)
     {
@@ -231,7 +231,6 @@ var MKMap = function (mapId) {
     that = this
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'hideMapCompass', [this.mapArrayId])
   }
-
   this.showMapTraffic = function () {
     this.options.mapTraffic = true
     that = this
@@ -242,7 +241,6 @@ var MKMap = function (mapId) {
     that = this
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'hideMapTraffic', [this.mapArrayId])
   }
-
   this.showMapBuildings = function () {
     this.options.mapBuildings = true
     that = this
@@ -253,7 +251,6 @@ var MKMap = function (mapId) {
     that = this
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'hideMapBuildings', [this.mapArrayId])
   }
-
   this.showMapUserLocation = function () {
     if (!this.locationManager.canUseLocation)
     {
@@ -272,7 +269,6 @@ var MKMap = function (mapId) {
   this.userLocationVisible = function (callback) {
     cordovaRef.exec(callback, this.execFailure, 'MapKit', 'isShowingUserLocation', [this.mapArrayId])
   }
-
   this.showMapPointsOfInterest = function () {
     this.options.mapPointsOfInterest = true
     that = this
@@ -301,14 +297,16 @@ var MKMap = function (mapId) {
 
     cordova.exec(this.execSuccess, this.execFailure, 'MapKit', 'setMapRegion', [this.mapArrayId, centerLat, centerLon, spanLat, spanLon, animated])
   }
-
   this.setMapOpacity = function (opacity) {
     that = this
     cordova.exec(this.execSuccess, this.execFailure, 'MapKit', 'setMapOpacity', [this.mapArrayId, opacity])
   }
-
   this.addMapPin = function (data) {
+      //cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', 'mapkit.js: addMapPin')
     console.log(isPlainObject(data))
+      lat = 0.0
+      lon = 0.0
+      objectID = 0
     if (data != undefined && isPlainObject(data))
     {
       lat = data.lat
@@ -374,7 +372,6 @@ function handlePinClickCallback(mapId, title)
 
 window.MKInterface = {}
 window.MKInterface.MKMap = MKMap
-window.MKInterface.locationManager = locationManager
 window.MKInterface.getMapByArrayId = function (aid) { return MapArray[aid] }
 window.MKInterface.getMapByMapId = function (mid) { return MapDict[mid] }
 window.MKInterface.__objc__ = {}
