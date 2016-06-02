@@ -697,7 +697,7 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
-    NSLog(@"viewForAnno");
+    NSLog(@"viewForAnno A");
     
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
@@ -721,6 +721,8 @@
     
     pinAnnotationView.canShowCallout = NO;
     pinAnnotationView.draggable = NO;
+
+    NSLog(@"viewForAnno B pinAnnoView: %@", pinAnnotationView);
 
     return pinAnnotationView;
 }
