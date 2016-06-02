@@ -8,6 +8,7 @@
     <js-module src="www/mapkit.js" name="mapkit">
         <clobbers target="mapkit" />
     </js-module>
+    <asset src="www/Images" target="Images" />
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="MapKit">
@@ -27,7 +28,5 @@
         <framework src="MapKit.framework" />
         <framework src="CoreLocation.framework" />
         <framework src="QuartzCore.framework" />
-        <resource-file src="Images/pin.png" target="Images/pin.png" />
-        <resource-file src="Images/colorPin.png" target="Images/colorPin.png" />
     </platform>
 </plugin>
