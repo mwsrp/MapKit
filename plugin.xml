@@ -12,7 +12,6 @@
         <config-file target="config.xml" parent="/*">
             <feature name="MapKit">
                 <param name="ios-package" value="MapKit"/>
-                <param name="onload" value="true" />
             </feature>
         </config-file>
         <header-file src="src/ios/MapKit.h" />
