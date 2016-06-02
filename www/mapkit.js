@@ -309,6 +309,9 @@ var MKMap = function (mapId) {
 
   this.addMapPin = function (data) {
     console.log(isPlainObject(data))
+      lat = 0.0
+      lon = 0.0
+      objectID = 0
     if (data != undefined && isPlainObject(data))
     {
       lat = data.lat
