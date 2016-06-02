@@ -309,6 +309,8 @@ var MKMap = function (mapId) {
   }
 
   this.addMapPin = function (data) {
+      cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', 'mapkit.js: addMapPin')
+
     console.log(isPlainObject(data))
       lat = 0.0
       lon = 0.0
