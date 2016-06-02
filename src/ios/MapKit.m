@@ -556,24 +556,19 @@
 {
     CGFloat mapId = [command.arguments.firstObject floatValue];
     
-    NSArray* pins = command.arguments[1];
-    NSMutableArray* Pins = [[NSMutableArray alloc] init];
+    NSArray *pins = command.arguments[1];
     
     NSLog(@"addMapPins");
-
+    
     for (int i = 0; i < pins.count; i++)
     {
         NSArray* pinInfo = [pins objectAtIndex:i];
         
         CGFloat lat = [[pinInfo objectAtIndex:0] floatValue];
         CGFloat lon = [[pinInfo objectAtIndex:1] floatValue];
-        NSString* title = [pinInfo objectAtIndex:2];
-        NSString* description = [pinInfo objectAtIndex:3];
+        NSInteger objectID = [command.arguments[3] integerValue];
         
-        MKPointAnnotation* pin = [[MKPointAnnotation alloc]init];
-        pin.coordinate = CLLocationCoordinate2DMake(lat, lon);
-        pin.title = title;
-        pin.subtitle = description;
+        MapKitAnnotation *pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
         
         [self.coordinateQuadTree addAnnotation:pin];
     }
@@ -614,7 +609,7 @@
         
         double scale = strongSelf.mapView.bounds.size.width / strongSelf.mapView.visibleMapRect.size.width;
         
-        NSArray *annotations = [strongSelf.coordinateQuadTree clusteredAnnotationsWithinMapRect:mapView.visibleMapRect withZoomScale:scale];
+        NSArray *annotations = [strongSelf.coordinateQuadTree clusteredAnnotationsWithinMapRect:strongSelf.mapView.visibleMapRect withZoomScale:scale];
         
         NSMutableSet *before = [NSMutableSet setWithArray:strongSelf.mapView.annotations];
         [before removeObject:[strongSelf.mapView userLocation]];
@@ -632,7 +627,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.mapView removeAnnotations:[toRemove allObjects]];
             [strongSelf.mapView addAnnotations:[toAdd allObjects]];
-            [strongSelf.mapView showAnnotations:strongSelf.mapView.annotations];
+            [strongSelf.mapView showAnnotations:strongSelf.mapView.annotations animated:YES];
         });
     });
 }
