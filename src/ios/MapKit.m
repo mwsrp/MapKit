@@ -604,7 +604,7 @@
         
         CGFloat lat = [[pinInfo objectAtIndex:0] floatValue];
         CGFloat lon = [[pinInfo objectAtIndex:1] floatValue];
-        NSInteger objectID = [command.arguments[3] integerValue];
+        NSInteger objectID = [command.arguments[2] integerValue];
         
         MapKitAnnotation *pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
         
