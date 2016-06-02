@@ -26,6 +26,11 @@
 
 @implementation MapKit
 
+-(void)consoleLog:(CDVInvokedUrlCommand*)command
+{
+    NSLog(@"consoleLog: %@", command.arguments.firstObject);
+}
+
 -(instancetype)init
 {
     NSLog(@"init");
@@ -42,7 +47,8 @@
 
 - (void)pluginInitialize
 {
-    NSLog(@"pluginInit");
+    NSLog(@"pluginInitialize");
+
     [super pluginInitialize];
     
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
@@ -70,6 +76,7 @@
     CGFloat yPos = [command.arguments[4] floatValue];
     
     NSLog(@"createMapView");
+    
     self.mapView.frame = CGRectMake(xPos, yPos, width, height);
     self.mapView.tag = mapId;
 
@@ -235,6 +242,7 @@
     
     self.mapView.showsScale = YES;
     
+    NSLog(@"showMapScale");
     
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
@@ -284,6 +292,8 @@
 
 - (void)showMapCompass:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"showMapCompass");
+    
     CGFloat mapId = [command.arguments.firstObject floatValue];
     
     self.mapView.showsCompass = YES;
@@ -525,6 +535,8 @@
     CGFloat lon = [command.arguments[2] floatValue];
     NSInteger objectID = [command.arguments[3] integerValue];
     
+    NSLog(@"addMapPin");
+
     MapKitAnnotation* pin = [[MapKitAnnotation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) objects:@[@(objectID)]];
     
     [self.coordinateQuadTree addAnnotation:pin];
@@ -543,6 +555,8 @@
     NSArray* pins = command.arguments[1];
     NSMutableArray* Pins = [[NSMutableArray alloc] init];
     
+    NSLog(@"addMapPins");
+
     for (int i = 0; i < pins.count; i++)
     {
         NSArray* pinInfo = [pins objectAtIndex:i];
@@ -634,6 +648,8 @@
 {
     __weak __typeof(self) weakSelf = self;
     
+    NSLog(@"regionDidChangeAnimated");
+
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         __strong __typeof(self) strongSelf = weakSelf;
         
@@ -655,6 +671,7 @@
         [toRemove minusSet:after];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.mapView removeAnnotations:[toRemove allObjects]];
             [strongSelf.mapView addAnnotations:[toAdd allObjects]];
         });
     });

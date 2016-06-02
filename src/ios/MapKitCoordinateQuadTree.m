@@ -122,17 +122,20 @@ float MKCellSizeForZoomScale(MKZoomScale zoomScale)
             
             CLLocationCoordinate2D coordinate;
             
-            if (count > 1)
+            if (count > 0)
             {
-                coordinate = CLLocationCoordinate2DMake(totalX / count, totalY / count);
+                if (sightings.count > 1)
+                {
+                    coordinate = CLLocationCoordinate2DMake(totalX / count, totalY / count);
+                }
+                else
+                {
+                    coordinate = CLLocationCoordinate2DMake(totalX, totalY);
+                }
+                
+                MapKitAnnotation *annotation = [[MapKitAnnotation alloc] initWithCoordinate:coordinate objects:sightings];
+                [clusteredAnnotations addObject:annotation];
             }
-            else
-            {
-                coordinate = CLLocationCoordinate2DMake(totalX, totalY);
-            }
-            
-            MapKitAnnotation *annotation = [[MapKitAnnotation alloc] initWithCoordinate:coordinate objects:sightings];
-            [clusteredAnnotations addObject:annotation];
         }
     }
     
