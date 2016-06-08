@@ -1,4 +1,4 @@
-Number.isFinite = Number.isFinite || function(value) {
+cordova.define("no.hotdot.mapkit.mapkit", function(require, exports, module) { Number.isFinite = Number.isFinite || function(value) {
     return typeof value === "number" && isFinite(value);
 }
 
@@ -21,12 +21,13 @@ var MKLog = function () {
     }
 }
 
-var MKPin = function (map, lat, lon, objID) {
+var MKPin = function (map, lat, lon, objID, clickCallback) {
   cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["MKPin init"])
   this.map = map
   this.lat = lat
   this.lon = lon
   this.objID = objID
+  this.clickCallback = clickCallback;
   this.execSuccess = function (data) {
     console.log("#MKPin(${that.title}) Executed native command successfully")
     console.log(data)
@@ -44,6 +45,9 @@ var MKPin = function (map, lat, lon, objID) {
   }
   this.createPinArray = function () {
     return [this.lat, this.lon, this.objID]
+  }
+  this.handleClick = function() {
+    this.clickCallback()
   }
 }
 
@@ -329,9 +333,12 @@ var MKMap = function (mapId) {
       objectID = arguments[2]
       cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin A2 objectID:", arguments[2]])
     }
+    console.log('[addMapPin] adding w objectID', objectID)
+
     if (this.Pins[objectID] != undefined)
     {
-      this.Pins[objectID].removePin()
+      console.warn('Tried to add pin with duplicate object ID', objectID)
+      return
     }
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["addMapPin B objectID:", objectID])
     Pin = new MKPin(this, lat, lon, objectID)
@@ -349,12 +356,16 @@ var MKMap = function (mapId) {
       lat = pin.lat || 58
       lon = pin.lon || 11
       objectID = pin.objectID
+      clickCallback = pin.clickCallback
+
+      console.log('[addMapPins] adding w objectID', objectID, this.Pins)
 
       if (this.Pins[objectID] != undefined)
       {
-        this.Pins[objectID].removePin()
+        console.warn('Tried to add pin with duplicate object ID', objectID)
+        continue
       }
-      Pin = new MKPin(this, lat, lon, objectID)
+      Pin = new MKPin(this, lat, lon, objectID, clickCallback)
       this.Pins[objectID] = Pin
       this.PinsArray.push(Pin)
 
@@ -365,6 +376,8 @@ var MKMap = function (mapId) {
   }
   this.removeAllMapPins = function () {
     that = this
+    this.Pins = {};
+    this.PinsArray = [];
     cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'removeAllMapPins', [this.mapArrayId])
   }
 }
@@ -382,7 +395,7 @@ function handlePinClickCallback(mapId, objectID)
   console.log("Got pin click on Map: ${parseInt(mapId)} on Pin: ${objectID}")
   cordovaRef.exec(this.execSuccess, this.execFailure, 'MapKit', 'consoleLog', ["handlePinClickCallback", objectID])
   Pin = MapArray[parseInt(mapId)].Pins[objectID]
-  Pin.pinClickCallback(Pin)
+  Pin.handleClick()
 }
 
 window.MKInterface = {}
@@ -393,3 +406,5 @@ window.MKInterface.getMapByMapId = function (mid) { return MapDict[mid] }
 window.MKInterface.__objc__ = {}
 window.MKInterface.__objc__.pinInfoClickCallback = handlePinInfoClickCallback
 window.MKInterface.__objc__.pinClickCallback = handlePinClickCallback
+
+});
